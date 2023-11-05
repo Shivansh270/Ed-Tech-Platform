@@ -7,39 +7,44 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendOtp, signUp } from "../services/operations/authAPI";
 import { useNavigate } from "react-router-dom";
 
-const [otp, setOtp] = useState("");
-const { signupData, loading } = useSelector((state) => state.auth);
-const dispatch = useDispatch();
-const navigate = useNavigate();
+const VerifyEmail = () => {
+  const [otp, setOtp] = useState("");
+  const { signupData, loading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Only allow access of this route when user has filled the signup form
+    if (!signupData) {
+      navigate("/signup");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-useEffect(() => {
-  // Only allow access of this route when user has filled the signup form
-  if (!signupData) {
-    navigate("/signup");
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
-
-const handleVerifyAndSignup = (e) => {
-  e.preventDefault();
-  //signup data from the slice
-  const { accountType, firstName, lastName, email, password, confirmPassword } =
-    signupData;
-
-  dispatch(
-    signUp(
+  const handleVerifyAndSignup = (e) => {
+    e.preventDefault();
+    //signup data from the slice
+    const {
       accountType,
       firstName,
       lastName,
       email,
       password,
       confirmPassword,
-      otp,
-      navigate
-    )
-  );
-};
-const VerifyEmail = () => {
+    } = signupData;
+
+    dispatch(
+      signUp(
+        accountType,
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        otp,
+        navigate
+      )
+    );
+  };
   return (
     <div>
       {loading ? (
@@ -49,7 +54,7 @@ const VerifyEmail = () => {
           <h1>verify email</h1>
           <p></p>
           <form onSubmit={handleVerifyAndSignup}>
-            <OTPInput
+            <OtpInput
               value={otp}
               onChange={setOtp}
               numInputs={6}

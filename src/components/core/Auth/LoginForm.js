@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { login } from "../../../services/operations/authAPI";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const LoginForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleOnChange = (event) => {
+  const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,

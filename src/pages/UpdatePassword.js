@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { resetPassword } from "../services/operations/authAPI";
 
-const handleOnChange = (event) => {
-  setFormData((prevData) => ({
-    ...prevData,
-    [event.target.name]: event.target.value,
-  }));
-};
-
-const handleOnSubmit = (event) => {
-  event.preventDefault();
-  const token = location.pathname.split("/").at(-1);
-  dispatch(resetPassword(password, confirmPassword, token));
-};
-
 const UpdatePassword = () => {
+  const handleOnChange = (event) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const handleOnSubmit = (event) => {
+    event.preventDefault();
+    const token = location.pathname.split("/").at(-1);
+    dispatch(resetPassword(password, confirmPassword, token));
+  };
+
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",

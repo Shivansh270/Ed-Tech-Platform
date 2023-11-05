@@ -5,20 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { resetPassword } from "../services/operations/authAPI";
 
-const [formData, setFormData] = useState({
-  password: "",
-  confirmPassword: "",
-});
-
-const { password, confirmPassword } = formData;
-
-const [showPassword, setShowPassword] = useState(false);
-const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-const { loading } = useSelector((state) => state.auth);
-
-const location = useLocation();
-const dispatch = useDispatch();
-
 const handleOnChange = (event) => {
   setFormData((prevData) => ({
     ...prevData,
@@ -33,6 +19,19 @@ const handleOnSubmit = (event) => {
 };
 
 const UpdatePassword = () => {
+  const [formData, setFormData] = useState({
+    password: "",
+    confirmPassword: "",
+  });
+
+  const { password, confirmPassword } = formData;
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { loading } = useSelector((state) => state.auth);
+
+  const location = useLocation();
+  const dispatch = useDispatch();
   return (
     <div>
       {loading ? (

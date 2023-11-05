@@ -3,24 +3,31 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-const navigate = useNavigate();
-const dispatch = useDispatch();
-
-const [formData, setFormData] = useState({
-  email: "",
-  password: "",
-});
-
-const [showPassword, setShowPassword] = useState(false);
-
-const handleOnChange = (event) => {
-  setFormData((prevData) => ({
-    ...prevData,
-    [e.target.name]: e.target.value,
-  }));
-};
-
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { email, password } = formData;
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleOnChange = (event) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login(email, password, navigate));
+  };
+
   return (
     <form
       onSubmit={handleOnSubmit}

@@ -29,21 +29,21 @@ const Navbar = () => {
   const { totalItems } = useSelector((state) => state.cart);
   const location = useLocation();
 
-  const [subLinks, setSsubLinks] = useState([]);
+  const [subLinks, setSubLinks] = useState([]);
 
-  // const fetchSublinks = async () => {
-  //   try {
-  //     const result = await apiConnector("GET", categories.CATEGORIES_API);
-  //     console.log("Printing Sublinks result:", result);
-  //     setSsubLinks(result.data.data);
-  //   } catch (error) {
-  //     console.log("Could not fetch the category list");
-  //   }
-  // };
+  const fetchSublinks = async () => {
+    try {
+      const result = await apiConnector("GET", categories.CATEGORIES_API);
+      console.log("Printing Sublinks result:", result);
+      setSubLinks(result.data.data);
+    } catch (error) {
+      console.log("Could not fetch the category list");
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchSublinks();
-  // }, []);
+  useEffect(() => {
+    fetchSublinks();
+  }, []);
 
   const matchRoute = (route) => {
     return matchPath({ path: route }, location.pathname);
@@ -81,7 +81,7 @@ const Navbar = () => {
                                 translate-y-[-45%] h-6 w-6 rotate-45 rounded bg-richblack-5"
                       ></div>
 
-                      {subLinks.length ? (
+                      {subLinks?.length ? (
                         subLinks.map((subLink, index) => (
                           <Link to={`${subLink.link}`} key={index}>
                             <p>{subLink.title}</p>

@@ -40,6 +40,7 @@ export function sendOtp(email, navigate) {
   };
 }
 
+//signup
 export function signUp(
   accountType,
   firstName,
@@ -105,7 +106,7 @@ export function login(email, password, navigate) {
         : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`;
 
       dispatch(setUser({ ...response.data.user, image: userImage }));
-      localStorage.setItem("tokn", JSON.stringify(response.data.token));
+      localStorage.setItem("token", JSON.stringify(response.data.token));
       navigate("/dashboard/my-profile");
     } catch (error) {
       console.log("LOGIN API ERROR............", error);
@@ -144,23 +145,30 @@ export function getPasswordResetToken(email, setEmailSent) {
 export function resetPassword(password, confirmPassword, token) {
   return async (dispatch) => {
     dispatch(setLoading(true));
-
     try {
       const response = await apiConnector("POST", RESETPASSWORD_API, {
         password,
         confirmPassword,
         token,
       });
+      console.log("RESET PASSWORD TOKEN RESPONSE....", response);
 
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
+      toast.success("Reset Email Sent");
+    } catch (error) {}
+  };
+}
 
-      toast.success("Password has been reset successfully");
-    } catch (error) {
-      console.log("RESET PASSWORD TOKEN Error", error);
-      toast.error("Unable to reset password");
-    }
-    dispatch(setLoading(false));
+export function logout(navigate) {
+  return (dispatch) => {
+    dispatch(setToken(null));
+    dispatch(setUser(null));
+    // dispatch(resetCart());
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    toast.success("Logged Out");
+    navigate("/");
   };
 }

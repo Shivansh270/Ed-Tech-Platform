@@ -26,7 +26,7 @@ const Navbar = () => {
   console.log("Printing base url: ", process.env.REACT_APP_BASE_URL);
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
-  const { totalItems } = useSelector((state) => state.cart);
+  // const { totalItems } = useSelector((state) => state.cart);
   const location = useLocation();
 
   const [subLinks, setSubLinks] = useState([]);
@@ -35,7 +35,7 @@ const Navbar = () => {
     try {
       const result = await apiConnector("GET", categories.CATEGORIES_API);
       console.log("Printing Sublinks result:", result);
-      setSubLinks(result.data.data);
+      setSubLinks(result?.data?.data);
     } catch (error) {
       console.log("Could not fetch the category list");
     }
@@ -112,12 +112,12 @@ const Navbar = () => {
 
         {/* Login/SignUp/Dashboard */}
         <div className="flex gap-x-4 items-center">
-          {user && user?.accountType != "Instructor" && (
+          {/* {user && user?.accountType != "Instructor" && (
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart />
               {totalItems > 0 && <span>{totalItems}</span>}
             </Link>
-          )}
+          )} */}
           {token === null && (
             <Link to="/login">
               <button className="border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md">

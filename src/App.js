@@ -3,7 +3,6 @@ import "./App.css";
 import Home from "./pages/Home";
 import Navbar from "./components/common/Navbar";
 import OpenRoute from "./components/core/Auth/OpenRoute";
-
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";

@@ -12,6 +12,7 @@ const {
   RESETPASSWORD_API,
 } = endpoints;
 
+//send otp fcn
 export function sendOtp(email, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");

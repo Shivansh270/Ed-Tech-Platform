@@ -25,8 +25,8 @@ router.post("/sendotp", sendotp);
 router.post("/changePassword", auth, changePassword);
 
 //reset password
-router.post("/reset-password-token", auth, resetPasswordToken);
+router.post("/reset-password-token", resetPasswordToken);
 
-router.post("/reset-password", auth, resetPassword);
+router.post("/reset-password", resetPassword);
 
 module.exports = router;

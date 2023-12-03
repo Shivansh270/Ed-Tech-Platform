@@ -5,11 +5,12 @@ import { NavbarLinks } from "../../data/navbar-links";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import ProfileDropDown from "../core/Auth/ProfileDropDown";
+
 import { apiConnector } from "../../services/apiconnector";
 import { categories } from "../../services/apis";
 import { useState } from "react";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
+import ProfileDropdown from "../core/Auth/ProfileDropDown";
 
 const subLinks = [
   {
@@ -26,16 +27,16 @@ const Navbar = () => {
   console.log("Printing base url: ", process.env.REACT_APP_BASE_URL);
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
-  // const { totalItems } = useSelector((state) => state.cart);
+  const { totalItems } = useSelector((state) => state.cart);
   const location = useLocation();
 
-  const [subLinks, setSubLinks] = useState([]);
+  const [ssubLinks, ssetSubLinks] = useState([]);
 
   const fetchSublinks = async () => {
     try {
       const result = await apiConnector("GET", categories.CATEGORIES_API);
       console.log("Printing Sublinks result:", result);
-      setSubLinks(result?.data?.data);
+      ssetSubLinks(result.data.data);
     } catch (error) {
       console.log("Could not fetch the category list");
     }
@@ -54,13 +55,13 @@ const Navbar = () => {
       <div className="flex w-11/12 max-w-maxContent items-center justify-between">
         {/* Image */}
         <Link to="/">
-          <img src={logo} width={160} height={42} loading="lazy" />
+          <img src={logo} alt="" width={160} height={42} loading="lazy" />
         </Link>
 
         {/* Nav Links */}
         <nav>
           <ul className="flex gap-x-6 text-richblack-25">
-            {NavbarLinks.map((link, index) => (
+            {NavbarLinks?.map((link, index) => (
               <li key={index}>
                 {link.title === "Catalog" ? (
                   <div className="relative flex items-center gap-2 group">
@@ -82,7 +83,7 @@ const Navbar = () => {
                       ></div>
 
                       {subLinks?.length ? (
-                        subLinks.map((subLink, index) => (
+                        subLinks?.map((subLink, index) => (
                           <Link to={`${subLink.link}`} key={index}>
                             <p>{subLink.title}</p>
                           </Link>
@@ -112,12 +113,12 @@ const Navbar = () => {
 
         {/* Login/SignUp/Dashboard */}
         <div className="flex gap-x-4 items-center">
-          {/* {user && user?.accountType != "Instructor" && (
+          {user && user?.accountType !== "Instructor" && (
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart />
               {totalItems > 0 && <span>{totalItems}</span>}
             </Link>
-          )} */}
+          )}
           {token === null && (
             <Link to="/login">
               <button className="border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md">
@@ -132,7 +133,7 @@ const Navbar = () => {
               </button>
             </Link>
           )}
-          {token !== null && <ProfileDropDown />}
+          {token !== null && <ProfileDropdown />}
         </div>
       </div>
     </div>

@@ -1,14 +1,15 @@
 import React from "react";
-import HighlightText from "../components/core/HomePage/HighlightText";
+
+import FoundingStory from "../assets/Images/FoundingStory.png";
 import BannerImage1 from "../assets/Images/aboutus1.webp";
 import BannerImage2 from "../assets/Images/aboutus2.webp";
 import BannerImage3 from "../assets/Images/aboutus3.webp";
-import Quote from "../components/core/AboutPage/Quote";
-import FoundingStory from "../assets/Images/FoundingStory.png";
-import StatsComponent from "../components/core/AboutPage/StatsComponent";
-import LearningGrid from "../components/core/AboutPage/LearningGrid";
-import ContactFormSection from "../components/core/AboutPage/ContactFormSection";
 import Footer from "../components/common/Footer";
+import ContactFormSection from "../components/core/AboutPage/ContactFormSection";
+import LearningGrid from "../components/core/AboutPage/LearningGrid";
+import Quote from "../components/core/AboutPage/Quote";
+import StatsComponenet from "../components/core/AboutPage/StatsComponent";
+import HighlightText from "../components/core/HomePage/HighlightText";
 
 const About = () => {
   return (
@@ -105,7 +106,7 @@ const About = () => {
         </div>
       </section>
 
-      <StatsComponent />
+      <StatsComponenet />
       <section className="mx-auto mt-20 flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-white">
         <LearningGrid />
         <ContactFormSection />

@@ -9,7 +9,7 @@ const SidebarLink = ({ link, iconName }) => {
   const dispatch = useDispatch();
 
   const matchRoute = (route) => {
-    return matchRoute({ path: route }, location.pathname);
+    return matchPath({ path: route }, location.pathname);
   };
   return (
     <NavLink

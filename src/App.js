@@ -15,6 +15,7 @@ import Dashboard from "./pages/Dashboard";
 import Error from "./pages/Error";
 import Contact from "./pages/Contact";
 import Settings from "./components/core/Dashboard/Settings";
+import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
 
 function App() {
   return (
@@ -85,6 +86,10 @@ function App() {
         >
           <Route path="dashboard/my-profile" element={<MyProfile />} />
           <Route path="dashboard/Settings" element={<Settings />} />
+          <Route
+            path="dashboard/enrolled-courses"
+            element={<EnrolledCourses />}
+          />
         </Route>
 
         <Route path="*" element={<Error />} />

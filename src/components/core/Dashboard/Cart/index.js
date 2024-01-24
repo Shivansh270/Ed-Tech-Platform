@@ -2,7 +2,7 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import RenderCartCourses from "./RenderCartCourses";
 import RenderTotalAmount from "./RenderTotalAmount";
 
-export default Cart = () => {
+export default function Cart() {
   const { totalItems, total } = useSelector((state) => state.cart);
   return (
     <div>
@@ -18,4 +18,4 @@ export default Cart = () => {
       )}
     </div>
   );
-};
+}

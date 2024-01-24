@@ -17,7 +17,7 @@ export const sidebarLinks = [
     id: 3,
     name: "My Courses",
     path: "/dashboard/my-courses",
-    type: ACCOUNT_TYPE.STUDENT,
+    type: ACCOUNT_TYPE.INSTRUCTOR,
     icon: "VscVm",
   },
   {
@@ -36,8 +36,8 @@ export const sidebarLinks = [
   },
   {
     id: 6,
-    name: "Purchase History",
-    path: "/dashboard/purchase-history",
+    name: "Your Cart",
+    path: "/dashboard/cart",
     type: ACCOUNT_TYPE.STUDENT,
     icon: "VscHistory",
   },

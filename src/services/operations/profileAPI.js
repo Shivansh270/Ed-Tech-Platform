@@ -14,7 +14,7 @@ export function getUserDetails(token, navigate) {
     dispatch(setLoading(true));
     try {
       const response = await apiConnector("GET", GET_USER_DETAILS_API, null, {
-        Authorisation: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       });
       console.log("GET_USER_DETAILS API RESPONSE............", response);
 

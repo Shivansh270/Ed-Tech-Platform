@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCourseCategories } from "../../../../../services/operations/courseDetailsAPI";
 import { useForm } from "react-hook-form";
+import { categories } from "../../../../../services/apis";
 
 const CourseInformationForm = () => {
   const {
@@ -17,6 +18,9 @@ const CourseInformationForm = () => {
   const [loading, setLoading] = useState();
   const [courseCategories, setCourseCategories] = useState([]);
 
+  function onSubmit() {
+    return;
+  }
   useEffect(() => {
     const getCategories = async () => {
       setLoading(true);
@@ -50,6 +54,26 @@ const CourseInformationForm = () => {
             className="w-full"
             {...register("courseName", { required: true })}
           />
+          {errors.courseName && <span>error</span>}
+        </div>
+        <div>
+          <label>category</label>
+          <select
+            id="courseCategory"
+            {...register("courseCategory", { required: true })}
+          >
+            <option value="" disabled>
+              choose a category
+            </option>
+            {!loading &&
+              courseCategories.map((v, index) => {
+                return <option key={index}>{v?.name}</option>;
+              })}
+          </select>
+        </div>
+
+        <div>
+          <label>benifits of course</label>
         </div>
       </form>
     </div>

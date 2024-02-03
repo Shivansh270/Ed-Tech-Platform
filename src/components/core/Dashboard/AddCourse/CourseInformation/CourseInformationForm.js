@@ -113,7 +113,7 @@ const CourseInformationForm = () => {
         const result = await editCourseDetails(formData, token);
         setLoading(false);
         if (result) {
-          setStep(2);
+          dispatch(setStep(2));
           dispatch(setCourse(result));
         }
       } else {
@@ -140,7 +140,7 @@ const CourseInformationForm = () => {
     console.log("PRINTING FORMDATA", formData);
     const result = await addCourseDetails(formData, token);
     if (result) {
-      setStep(2);
+      dispatch(setStep(2));
       dispatch(setCourse(result));
     }
     setLoading(false);

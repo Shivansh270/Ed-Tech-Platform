@@ -11,6 +11,7 @@ import { RxCross1 } from "react-icons/rx";
 import Upload from "../Upload";
 import IconBtn from "../../../../common/IconBtn";
 import { useSelector } from "react-redux";
+
 const SubSectionModal = (
   modalData,
   setModalData,

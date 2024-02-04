@@ -1,13 +1,16 @@
+// Import necessary modules
 const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
-require("dotenv").config();
 
+// Create a new sub-section for a given section
 exports.createSubSection = async (req, res) => {
   try {
+    // Extract necessary information from the request body
     const { sectionId, title, description } = req.body;
     const video = req.files.video;
 
+    // Check if all necessary fields are provided
     if (!sectionId || !title || !description || !video) {
       return res
         .status(404)
@@ -51,8 +54,8 @@ exports.createSubSection = async (req, res) => {
 
 exports.updateSubSection = async (req, res) => {
   try {
-    const { sectionId, title, description } = req.body;
-    const subSection = await SubSection.findById(sectionId);
+    const { sectionId, subSectionId, title, description } = req.body;
+    const subSection = await SubSection.findById(subSectionId);
 
     if (!subSection) {
       return res.status(404).json({
@@ -80,8 +83,13 @@ exports.updateSubSection = async (req, res) => {
 
     await subSection.save();
 
+    const updatedSection = await Section.findById(sectionId).populate(
+      "subSection"
+    );
+
     return res.json({
       success: true,
+      data: updatedSection,
       message: "Section updated successfully",
     });
   } catch (error) {
@@ -114,8 +122,13 @@ exports.deleteSubSection = async (req, res) => {
         .json({ success: false, message: "SubSection not found" });
     }
 
+    const updatedSection = await Section.findById(sectionId).populate(
+      "subSection"
+    );
+
     return res.json({
       success: true,
+      data: updatedSection,
       message: "SubSection deleted successfully",
     });
   } catch (error) {

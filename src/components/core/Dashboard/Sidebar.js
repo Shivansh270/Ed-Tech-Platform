@@ -5,7 +5,7 @@ import { sidebarLinks } from "../../../data/dashboard-links";
 import SidebarLink from "./SidebarLink";
 import { useNavigate } from "react-router-dom";
 import { VscSignOut } from "react-icons/vsc";
-import ConfirmationModal from "../../common/ConformationModal";
+import ConfirmationModal from "../../common/ConfirmationModal";
 import { useState } from "react";
 
 const Sidebar = () => {

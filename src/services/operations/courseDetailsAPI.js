@@ -156,7 +156,7 @@ export const createSubSection = async (data, token) => {
   const toastId = toast.loading("Loading...");
   try {
     const response = await apiConnector("POST", CREATE_SUBSECTION_API, data, {
-      Authorisation: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     });
     console.log("CREATE SUB-SECTION API RESPONSE............", response);
     if (!response?.data?.success) {

@@ -19,18 +19,19 @@ exports.capturePayment = async (req, res) => {
   if (courses.length === 0) {
     return res.json({ success: false, message: "Please provide Course Id" });
   }
-  console.log("capturing the payment");
+
   let totalAmount = 0;
-  console.log("capturing the payment 2");
 
   for (const course_id of courses) {
-    let course;
     try {
-      course = await Course.findById(course_id);
+      console.log("Processing course with ID:", course_id); // Log the course_id being processed
+
+      const course = await Course.findById(course_id);
       if (!course) {
-        return res
-          .status(500)
-          .json({ success: false, message: "Could not find the course" });
+        return res.status(200).json({
+          success: false,
+          message: `Could not find the course with ID ${course_id}`,
+        });
       }
 
       const uid = new mongoose.Types.ObjectId(userId);
@@ -42,8 +43,11 @@ exports.capturePayment = async (req, res) => {
 
       totalAmount += course.price;
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({ success: false, message: error.message });
+      console.log("Error while processing course with ID:", course_id, error); // Log additional details about the error
+      return res.status(500).json({
+        success: false,
+        message: `Error while processing course with ID ${course_id}: ${error.message}`,
+      });
     }
   }
   const currency = "INR";
@@ -60,10 +64,10 @@ exports.capturePayment = async (req, res) => {
       message: paymentResponse,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error while initiating order:", error); // Log additional details about the error
     return res
       .status(500)
-      .json({ success: false, mesage: "Could not Initiate Order" });
+      .json({ success: false, message: "Could not Initiate Order" });
   }
 };
 

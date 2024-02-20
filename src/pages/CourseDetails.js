@@ -3,27 +3,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { buyCourse } from "../services/operations/studentFeaturesAPI";
 import { fetchCourseDetails } from "../services/operations/courseDetailsAPI";
+import { setCourse } from "../slices/courseSlice";
 import GetAvgRating from "../utils/avgRating";
 import Error from "./Error";
 import ConfirmationModal from "../components/common/ConfirmationModal";
 import RatingStars from "../components/common/RatingStars";
-import CourseDetailsCard from "../components/core/Course/CourseDetailsCard.js";
 import { formatDate } from "../services/formatDate";
+import CourseDetailsCard from "../components/core/Course/CourseDetailsCard";
 
 const CourseDetails = () => {
   const { user } = useSelector((state) => state.profile);
   const { token } = useSelector((state) => state.auth);
   const { loading } = useSelector((state) => state.profile);
-
+  const { paymentLoading } = useSelector((state) => state.course);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { courseId } = useParams();
 
   const [courseData, setCourseData] = useState(null);
   const [confirmationModal, setConfirmationModal] = useState(null);
-  const [avgReviewCount, setAverageReviewCount] = useState(0);
-  const [totalNoOfLectures, setTotalNoOfLectures] = useState(0);
-
   useEffect(() => {
     const getCourseFullDetails = async () => {
       try {
@@ -37,6 +35,8 @@ const CourseDetails = () => {
     getCourseFullDetails();
   }, [courseId]);
 
+  const [avgReviewCount, setAverageReviewCount] = useState(0);
+
   useEffect(() => {
     const count = GetAvgRating(
       courseData?.data?.courseDetails.ratingAndReviews
@@ -44,13 +44,23 @@ const CourseDetails = () => {
     setAverageReviewCount(count);
   }, [courseData]);
 
+  const [totalNoOfLectures, setTotalNoOfLectures] = useState(0);
   useEffect(() => {
     let lectures = 0;
-    courseData?.data?.CourseDetails?.courseContent.forEach((sec) => {
-      lectures += sec.subSextion.length || 0;
+    courseData?.data?.courseDetails?.courseContent?.forEach((sec) => {
+      lectures += sec.subSection.length || 0;
     });
     setTotalNoOfLectures(lectures);
   }, [courseData]);
+
+  const [isActive, setIsActive] = useState(Array(0));
+  const handleActive = (id) => {
+    setIsActive(
+      !isActive.includes(id)
+        ? isActive.concat(id)
+        : isActive.filter((e) => e != id)
+    );
+  };
 
   const handleBuyCourse = () => {
     if (token) {
@@ -78,7 +88,6 @@ const CourseDetails = () => {
       </div>
     );
   }
-
   const {
     _id: course_id,
     courseName,
@@ -104,6 +113,7 @@ const CourseDetails = () => {
           <span>{`(${ratingAndReviews.length} reviews) `}</span>
           <span>{`(${studentsEnrolled.length} students enrolled)`}</span>
         </div>
+
         <div>
           <p>Created By {`${instructor.firstName}`}</p>
         </div>
@@ -121,6 +131,34 @@ const CourseDetails = () => {
           />
         </div>
       </div>
+
+      <div>
+        <p> What You WIll learn</p>
+        <div>{whatYouWillLearn}</div>
+      </div>
+
+      <div>
+        <div>
+          <p>Course Content:</p>
+        </div>
+
+        <div className="flex gap-x-3 justify-between">
+          <div>
+            <span>{courseContent.length} section(s)</span>
+
+            <span>{totalNoOfLectures} lectures</span>
+            <span>{courseData.data?.totalDuration} total length</span>
+          </div>
+
+          <div>
+            <button onClick={() => setIsActive([])}>
+              Collapse all Sections
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </div>
   );
 };

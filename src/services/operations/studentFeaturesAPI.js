@@ -61,7 +61,7 @@ export async function buyCourse(
     console.log("PRINTING orderResponse", orderResponse);
     //options
     const options = {
-      key: process.env.RAZORPAY_KEY,
+      key: "rzp_test_11pgLoXJC9wQWR",
       currency: orderResponse.data.message.currency,
       amount: `${orderResponse.data.message.amount}`,
       order_id: orderResponse.data.message.id,
@@ -126,14 +126,15 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
     });
 
     if (!response.data.success) {
-      throw new Error(response.data.message);
+      console.log("Server error details:", response.data);
+      throw new Error(response.data.message || "Payment verification failed");
     }
-    toast.success("payment Successful, ypou are addded to the course");
+    toast.success("Payment successful, you are added to the course");
     navigate("/dashboard/enrolled-courses");
     dispatch(resetCart());
   } catch (error) {
     console.log("PAYMENT VERIFY ERROR....", error);
-    toast.error("Could not verify Payment");
+    toast.error(error.message || "Could not verify Payment");
   }
   toast.dismiss(toastId);
   dispatch(setPaymentLoading(false));

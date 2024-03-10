@@ -26,7 +26,7 @@ const VideoDetails = () => {
       if (!courseId && !sectionId && !subSectionId) {
         navigate("/dashboard/enrolled-courses");
       } else {
-        const filteredVideoData = filteredData?.[0].subsection.filter(
+        const filteredVideoData = filteredData?.[0].subSection.filter(
           (data) => data._id === subSectionId
         );
 

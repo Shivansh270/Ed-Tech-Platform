@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast";
 import { studentEndpoints } from "../apis";
 import { apiConnector } from "../apiconnector";
-// import rzpLogo from "../../assets/Logo/rzp_logo.png";
+// import rzpLogo from "../../assets/Logo/rzp_logos
 import { setPaymentLoading } from "../../slices/courseSlice";
 import { resetCart } from "../../slices/cartSlice";
 
@@ -61,7 +61,7 @@ export async function buyCourse(
     console.log("PRINTING orderResponse", orderResponse);
     //options
     const options = {
-      key: "rzp_test_11pgLoXJC9wQWR",
+      key: process.env.RAZORPAY_KEY,
       currency: orderResponse.data.message.currency,
       amount: `${orderResponse.data.message.amount}`,
       order_id: orderResponse.data.message.id,
@@ -126,15 +126,14 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
     });
 
     if (!response.data.success) {
-      console.log("Server error details:", response.data);
-      throw new Error(response.data.message || "Payment verification failed");
+      throw new Error(response.data.message);
     }
-    toast.success("Payment successful, you are added to the course");
+    toast.success("payment Successful, ypou are addded to the course");
     navigate("/dashboard/enrolled-courses");
     dispatch(resetCart());
   } catch (error) {
     console.log("PAYMENT VERIFY ERROR....", error);
-    toast.error(error.message || "Could not verify Payment");
+    toast.error("Could not verify Payment");
   }
   toast.dismiss(toastId);
   dispatch(setPaymentLoading(false));

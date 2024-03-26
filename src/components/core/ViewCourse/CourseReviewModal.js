@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import IconBtn from "../../common/IconBtn";
 import { createRating } from "../../../services/operations/courseDetailsAPI";
+import ReactStars from "react-rating-stars-component";
 
 const CourseReviewModal = ({ setReviewModal }) => {
   const { user } = useSelector((state) => state.profile);
@@ -43,7 +44,7 @@ const CourseReviewModal = ({ setReviewModal }) => {
         {/* Modal header */}
         <div>
           <p>Add Review</p>
-          <button onClick={setReviewModal(false)}>Close</button>
+          <button onClick={() => setReviewModal(false)}>Close</button>
         </div>
 
         {/* Modal Body */}

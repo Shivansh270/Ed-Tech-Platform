@@ -10,6 +10,7 @@ const {
   paymentSuccessEmail,
 } = require("../mail/templates/paymentSuccessEmail");
 const crypto = require("crypto");
+const CourseProgress = require("../models/CourseProgress");
 
 //initiate the razorpay order
 exports.capturePayment = async (req, res) => {
@@ -23,15 +24,13 @@ exports.capturePayment = async (req, res) => {
   let totalAmount = 0;
 
   for (const course_id of courses) {
+    let course;
     try {
-      console.log("Processing course with ID:", course_id); // Log the course_id being processed
-
-      const course = await Course.findById(course_id);
+      course = await Course.findById(course_id);
       if (!course) {
-        return res.status(200).json({
-          success: false,
-          message: `Could not find the course with ID ${course_id}`,
-        });
+        return res
+          .status(200)
+          .json({ success: false, message: "Could not find the course" });
       }
 
       const uid = new mongoose.Types.ObjectId(userId);
@@ -43,11 +42,8 @@ exports.capturePayment = async (req, res) => {
 
       totalAmount += course.price;
     } catch (error) {
-      console.log("Error while processing course with ID:", course_id, error); // Log additional details about the error
-      return res.status(500).json({
-        success: false,
-        message: `Error while processing course with ID ${course_id}: ${error.message}`,
-      });
+      console.log(error);
+      return res.status(500).json({ success: false, message: error.message });
     }
   }
   const currency = "INR";
@@ -64,10 +60,10 @@ exports.capturePayment = async (req, res) => {
       message: paymentResponse,
     });
   } catch (error) {
-    console.log("Error while initiating order:", error); // Log additional details about the error
+    console.log(error);
     return res
       .status(500)
-      .json({ success: false, message: "Could not Initiate Order" });
+      .json({ success: false, mesage: "Could not Initiate Order" });
   }
 };
 
@@ -127,12 +123,19 @@ const enrollStudents = async (courses, userId, res) => {
           .json({ success: false, message: "Course not Found" });
       }
 
+      const courseProgress = await CourseProgress.create({
+        courseID: courseId,
+        userId: userId,
+        completedVideos: [],
+      });
+
       //find the student and add the course to their list of enrolledCOurses
       const enrolledStudent = await User.findByIdAndUpdate(
         userId,
         {
           $push: {
             courses: courseId,
+            courseProgress: courseProgress._id,
           },
         },
         { new: true }

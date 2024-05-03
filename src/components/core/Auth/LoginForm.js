@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+
 import { login } from "../../../services/operations/authAPI";
 
-const LoginForm = () => {
+function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const { email, password } = formData;
-
   const [showPassword, setShowPassword] = useState(false);
+
+  const { email, password } = formData;
 
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
@@ -40,8 +40,8 @@ const LoginForm = () => {
         </p>
         <input
           required
-          name="email"
           type="text"
+          name="email"
           value={email}
           onChange={handleOnChange}
           placeholder="Enter email address"
@@ -51,7 +51,7 @@ const LoginForm = () => {
           className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5"
         />
       </label>
-      <label>
+      <label className="relative">
         <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
           Password <sup className="text-pink-200">*</sup>
         </p>
@@ -91,6 +91,6 @@ const LoginForm = () => {
       </button>
     </form>
   );
-};
+}
 
 export default LoginForm;

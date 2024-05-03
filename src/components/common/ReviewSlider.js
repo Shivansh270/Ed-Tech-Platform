@@ -4,8 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
-// import { Autoplay, FreeMode, Navigation, Pagination } from "swiper";
-import { Navigation, Pagination, Autoplay, FreeMode } from "swiper/modules";
+import { Autoplay, FreeMode, Navigation, Pagination } from "swiper";
 import ReactStars from "react-rating-stars-component";
 import { apiConnector } from "../../services/apiconnector";
 import { ratingsEndpoints } from "../../services/apis";
@@ -13,6 +12,7 @@ import { FaStar } from "react-icons/fa";
 
 const ReviewSlider = () => {
   const [reviews, setReviews] = useState([]);
+  const truncateWords = 15;
 
   useEffect(() => {
     const fetchAllReviews = async () => {
@@ -20,20 +20,20 @@ const ReviewSlider = () => {
         "GET",
         ratingsEndpoints.REVIEWS_DETAILS_API
       );
+      console.log("LOgging response in rating", data);
 
-      console.log(data);
       if (data?.success) {
         setReviews(data?.data);
       }
-      console.log("pinting reviews", reviews);
-    };
 
+      console.log("Printing Reviews", reviews);
+    };
     fetchAllReviews();
   }, []);
 
   return (
-    <div>
-      <div className="h-[190px] text-white">
+    <div className="text-white">
+      <div className="h-[190px] max-w-maxContent">
         <Swiper
           slidesPerView={4}
           spaceBetween={24}

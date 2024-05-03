@@ -29,6 +29,7 @@ function SignupForm() {
 
   const { firstName, lastName, email, password, confirmPassword } = formData;
 
+  // Handle input fields, when some value changes
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -49,9 +50,11 @@ function SignupForm() {
       accountType,
     };
 
+    // Setting signup data to state
+    // To be used after otp verification
     dispatch(setSignupData(signupData));
-
-    dispatch(sendOtp(signupData.email, navigate));
+    // Send OTP to user for verification
+    dispatch(sendOtp(formData.email, navigate));
 
     // Reset
     setFormData({
@@ -64,6 +67,7 @@ function SignupForm() {
     setAccountType(ACCOUNT_TYPE.STUDENT);
   };
 
+  // data to pass to Tab component
   const tabData = [
     {
       id: 1,

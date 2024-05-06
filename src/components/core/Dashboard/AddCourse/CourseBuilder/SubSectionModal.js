@@ -9,7 +9,7 @@ import {
   updateSubSection,
 } from "../../../../../services/operations/courseDetailsAPI";
 import { setCourse } from "../../../../../slices/courseSlice";
-import IconBtn from "../../../../common/IconBtn";
+import IconBtn from "../../../../Common/IconBtn";
 import Upload from "../Upload";
 
 export default function SubSectionModal({
@@ -26,6 +26,10 @@ export default function SubSectionModal({
     formState: { errors },
     getValues,
   } = useForm();
+
+  // console.log("view", view)
+  // console.log("edit", edit)
+  // console.log("add", add)
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);

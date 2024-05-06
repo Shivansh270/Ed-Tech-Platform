@@ -1,10 +1,15 @@
 import React from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
-import { Autoplay, FreeMode, Navigation, Pagination } from "swiper";
+// import { Autoplay, FreeMode, Navigation, Pagination } from "swiper";
+import { Navigation, Pagination, Autoplay, FreeMode } from "swiper/modules";
+// import ReactStars from "react-rating-stars-component";
+// import { apiConnector } from "../../services/apiconnector";
+// import { ratingsEndpoints } from "../../services/apis";
 
 import Course_Card from "./Course_Card";
 

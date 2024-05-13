@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendOtp, signUp } from "../services/operations/authAPI";
 import { useNavigate } from "react-router-dom";
 
-function VerifyEmail() {
+const VerifyEmail = () => {
   const [otp, setOtp] = useState("");
   const { signupData, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -18,11 +18,11 @@ function VerifyEmail() {
     if (!signupData) {
       navigate("/signup");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleVerifyAndSignup = (e) => {
     e.preventDefault();
+    //signup data from the slice
     const {
       accountType,
       firstName,
@@ -45,21 +45,14 @@ function VerifyEmail() {
       )
     );
   };
-
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] grid place-items-center">
+    <div>
       {loading ? (
-        <div>
-          <div className="spinner"></div>
-        </div>
+        <div className="spinner"></div>
       ) : (
-        <div className="max-w-[500px] p-4 lg:p-8">
-          <h1 className="text-richblack-5 font-semibold text-[1.875rem] leading-[2.375rem]">
-            Verify Email
-          </h1>
-          <p className="text-[1.125rem] leading-[1.625rem] my-4 text-richblack-100">
-            A verification code has been sent to you. Enter the code below
-          </p>
+        <div>
+          <h1>verify email</h1>
+          <p></p>
           <form onSubmit={handleVerifyAndSignup}>
             <OtpInput
               value={otp}
@@ -95,7 +88,7 @@ function VerifyEmail() {
             </Link>
             <button
               className="flex items-center text-blue-100 gap-x-2"
-              onClick={() => dispatch(sendOtp(signupData.email))}
+              onClick={() => dispatch(sendOtp(signupData.email, navigate))}
             >
               <RxCountdownTimer />
               Resend it
@@ -105,6 +98,6 @@ function VerifyEmail() {
       )}
     </div>
   );
-}
+};
 
 export default VerifyEmail;

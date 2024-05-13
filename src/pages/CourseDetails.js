@@ -15,7 +15,7 @@ import Footer from "../components/common/Footer";
 import CourseAccordionBar from "../components/core/Course/CourseAccordionBar";
 import { BiInfoCircle } from "react-icons/bi";
 import { HiOutlineGlobeAlt } from "react-icons/hi";
-import Markdown from "react-markdown";
+// import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 function CourseDetails() {
   const { user } = useSelector((state) => state.profile);
@@ -197,7 +197,7 @@ function CourseDetails() {
           <div className="my-8 border border-richblack-600 p-8">
             <p className="text-3xl font-semibold">What you'll learn</p>
             <div className="mt-5">
-              <Markdown>{whatYouWillLearn}</Markdown>
+              {/* <ReactMarkdown>{whatYouWillLearn}</ReactMarkdown> */}
             </div>
           </div>
 

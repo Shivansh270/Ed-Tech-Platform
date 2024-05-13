@@ -2,44 +2,42 @@ import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-
+import { Link, useLocation } from "react-router-dom";
 import { resetPassword } from "../services/operations/authAPI";
 
-function UpdatePassword() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const { loading } = useSelector((state) => state.auth);
+const UpdatePassword = () => {
+  const handleOnChange = (event) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const handleOnSubmit = (event) => {
+    event.preventDefault();
+    const token = location.pathname.split("/").at(-1);
+    dispatch(resetPassword(password, confirmPassword, token));
+  };
+
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const { password, confirmPassword } = formData;
 
-  const handleOnChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { loading } = useSelector((state) => state.auth);
 
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
-    const token = location.pathname.split("/").at(-1);
-    dispatch(resetPassword(password, confirmPassword, token, navigate));
-  };
-
+  const location = useLocation();
+  const dispatch = useDispatch();
   return (
-    <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
+    <div>
       {loading ? (
         <div className="spinner"></div>
       ) : (
-        <div className="max-w-[500px] p-4 lg:p-8">
+        <div>
           <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">
             Choose new password
           </h1>
@@ -103,8 +101,9 @@ function UpdatePassword() {
               Reset Password
             </button>
           </form>
+
           <div className="mt-6 flex items-center justify-between">
-            <Link to="/login">
+            <Link to={"/login"}>
               <p className="flex items-center gap-x-2 text-richblack-5">
                 <BiArrowBack /> Back To Login
               </p>
@@ -114,6 +113,6 @@ function UpdatePassword() {
       )}
     </div>
   );
-}
+};
 
 export default UpdatePassword;

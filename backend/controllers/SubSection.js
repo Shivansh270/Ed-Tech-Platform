@@ -83,14 +83,17 @@ exports.updateSubSection = async (req, res) => {
 
     await subSection.save();
 
+    // find updated section and return it
     const updatedSection = await Section.findById(sectionId).populate(
       "subSection"
     );
 
+    console.log("updated section", updatedSection);
+
     return res.json({
       success: true,
-      data: updatedSection,
       message: "Section updated successfully",
+      data: updatedSection,
     });
   } catch (error) {
     console.error(error);

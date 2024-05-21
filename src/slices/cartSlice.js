@@ -21,12 +21,14 @@ const cartSlice = createSlice({
       const course = action.payload;
       const index = state.cart.findIndex((item) => item._id === course._id);
 
-      if (index > 0) {
+      if (index >= 0) {
         // If the course is already in the cart, do not modify the quantity
         toast.error("Course already in cart");
         return;
       }
+      // If the course is not in the cart, add it to the cart
       state.cart.push(course);
+      // Update the total quantity and price
       state.totalItems++;
       state.total += course.price;
       // Update to localstorage
@@ -36,7 +38,6 @@ const cartSlice = createSlice({
       // show toast
       toast.success("Course added to cart");
     },
-
     removeFromCart: (state, action) => {
       const courseId = action.payload;
       const index = state.cart.findIndex((item) => item._id === courseId);

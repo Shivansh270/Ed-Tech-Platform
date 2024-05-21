@@ -4,8 +4,9 @@ import { FaStar } from "react-icons/fa";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
-import { Navigation, Pagination, Autoplay, FreeMode } from "swiper/modules";
+import { Pagination, Autoplay, FreeMode } from "swiper/modules";
 import ReactStars from "react-rating-stars-component";
+import "../../App.css"
 import { apiConnector } from "../../services/apiconnector";
 import { ratingsEndpoints } from "../../services/apis";
 import { Swiper, SwiperSlide } from "swiper/react";

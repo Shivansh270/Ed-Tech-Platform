@@ -4,7 +4,7 @@ const Profile = require("../models/Profile");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const { convertSecondsToDuration } = require("../utils/secToDuration");
-// Method for updating a profile
+const mongoose = require("mongoose");
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -58,14 +58,8 @@ exports.updateProfile = async (req, res) => {
 
 exports.deleteAccount = async (req, res) => {
   try {
-    // TODO: Find More on Job Schedule
-    // const job = schedule.scheduleJob("10 * * * * *", function () {
-    // 	console.log("The answer to life, the universe, and everything!");
-    // });
-    // console.log(job);
-    console.log("Printing ID: ", req.user.id);
     const id = req.user.id;
-
+    console.log(id);
     const user = await User.findById({ _id: id });
     if (!user) {
       return res.status(404).json({
@@ -74,14 +68,23 @@ exports.deleteAccount = async (req, res) => {
       });
     }
     // Delete Assosiated Profile with the User
-    await Profile.findByIdAndDelete({ _id: user.additionalDetails });
-    // TODO: Unenroll User From All the Enrolled Courses
+    await Profile.findByIdAndDelete({
+      _id: new mongoose.Types.ObjectId(user.additionalDetails),
+    });
+    for (const courseId of user.courses) {
+      await Course.findByIdAndUpdate(
+        courseId,
+        { $pull: { studentsEnroled: id } },
+        { new: true }
+      );
+    }
     // Now Delete User
     await User.findByIdAndDelete({ _id: id });
     res.status(200).json({
       success: true,
       message: "User deleted successfully",
     });
+    await CourseProgress.deleteMany({ userId: id });
   } catch (error) {
     console.log(error);
     res
@@ -155,7 +158,6 @@ exports.getEnrolledCourses = async (req, res) => {
         },
       })
       .exec();
-
     userDetails = userDetails.toObject();
     var SubsectionLength = 0;
     for (var i = 0; i < userDetails.courses.length; i++) {
@@ -214,23 +216,25 @@ exports.instructorDashboard = async (req, res) => {
     const courseDetails = await Course.find({ instructor: req.user.id });
 
     const courseData = courseDetails.map((course) => {
-      const totalStudentsEnrolled = course.studentsEnrolled.length;
+      const totalStudentsEnrolled = course.studentsEnroled.length;
       const totalAmountGenerated = totalStudentsEnrolled * course.price;
 
-      //create an new object with the additional fields
+      // Create a new object with the additional fields
       const courseDataWithStats = {
         _id: course._id,
         courseName: course.courseName,
         courseDescription: course.courseDescription,
+        // Include other course properties as needed
         totalStudentsEnrolled,
         totalAmountGenerated,
       };
+
       return courseDataWithStats;
     });
 
     res.status(200).json({ courses: courseData });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Server Error" });
   }
 };

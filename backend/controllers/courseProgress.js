@@ -2,50 +2,45 @@ const CourseProgress = require("../models/CourseProgress");
 const SubSection = require("../models/SubSection");
 
 exports.updateCourseProgress = async (req, res) => {
-  const { courseId, subSectionId } = req.body;
+  const { courseId, subsectionId } = req.body;
   const userId = req.user.id;
 
   try {
-    //check if the subsection is valid
-    const subSection = await SubSection.findById(subSectionId);
-
-    if (!subSection) {
-      return res.status(404).json({ error: "Invalid SUbSection" });
+    // Check if the subsection is valid
+    const subsection = await SubSection.findById(subsectionId);
+    if (!subsection) {
+      return res.status(404).json({ error: "Invalid subsection" });
     }
 
-    console.log("SubSection Validation Done");
-
-    //check for old entry
+    // Find the course progress document for the user and course
     let courseProgress = await CourseProgress.findOne({
       courseID: courseId,
       userId: userId,
     });
+
     if (!courseProgress) {
+      // If course progress doesn't exist, create a new one
       return res.status(404).json({
         success: false,
-        message: "Course Progress does not exist",
+        message: "Course progress Does Not Exist",
       });
     } else {
-      console.log("Course Progress Validation Done");
-      //check for re-completing video/subsection
-      if (courseProgress.completedVideos.includes(subSectionId)) {
-        return res.status(400).json({
-          error: "Subsection already completed",
-        });
+      // If course progress exists, check if the subsection is already completed
+      if (courseProgress.completedVideos.includes(subsectionId)) {
+        return res.status(400).json({ error: "Subsection already completed" });
       }
 
-      //poush into completed video
-      courseProgress.completedVideos.push(subSectionId);
-      console.log("Copurse Progress Push Done");
+      // Push the subsection into the completedVideos array
+      courseProgress.completedVideos.push(subsectionId);
     }
+
+    // Save the updated course progress
     await courseProgress.save();
-    console.log("Course Progress Save call Done");
-    return res.status(200).json({
-      success: true,
-      message: "Course Progress Updated Successfully",
-    });
+
+    return res.status(200).json({ message: "Course progress updated" });
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
+

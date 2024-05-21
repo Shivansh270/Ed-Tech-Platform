@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { buyCourse } from "../services/operations/studentFeaturesAPI";
-import { fetchCourseDetails } from "../services/operations/courseDetailsAPI";
-import { setCourse } from "../slices/courseSlice";
-import GetAvgRating from "../utils/avgRating";
-import Error from "./Error";
-import ConfirmationModal from "../components/common/ConfirmationModal";
-import RatingStars from "../components/common/RatingStars";
-import { formatDate } from "../services/formatDate";
-import CourseDetailsCard from "../components/core/Course/CourseDetailsCard";
-
-import Footer from "../components/common/Footer";
-import CourseAccordionBar from "../components/core/Course/CourseAccordionBar";
 import { BiInfoCircle } from "react-icons/bi";
 import { HiOutlineGlobeAlt } from "react-icons/hi";
-// import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import Markdown from "react-markdown";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+
+import ConfirmationModal from "../components/common/ConfirmationModal";
+import Footer from "../components/common/Footer";
+import RatingStars from "../components/common/RatingStars";
+import CourseAccordionBar from "../components/core/Course/CourseAccordionBar";
+import CourseDetailsCard from "../components/core/Course/CourseDetailsCard";
+import { formatDate } from "../services/formatDate";
+import { fetchCourseDetails } from "../services/operations/courseDetailsAPI";
+import { buyCourse } from "../services/operations/studentFeaturesAPI";
+import GetAvgRating from "../utils/avgRating";
+import Error from "./Error";
 
 function CourseDetails() {
   const { user } = useSelector((state) => state.profile);
@@ -152,12 +151,13 @@ function CourseDetails() {
               <div className="text-md flex flex-wrap items-center gap-2">
                 <span className="text-yellow-25">{avgReviewCount}</span>
                 <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-                <span>{`(${ratingAndReviews?.length} reviews)`}</span>
-                <span>{`${studentsEnroled?.length} students enrolled`}</span>
+                <span>{`(${ratingAndReviews.length} reviews)`}</span>
+                <span>{`${studentsEnroled.length} students enrolled`}</span>
               </div>
               <div>
                 <p className="">
-                  Created By {`${instructor?.firstName} ${instructor?.lastName}`}
+                  Created By{" "}
+                  {`${instructor?.firstName} ${instructor?.lastName}`}
                 </p>
               </div>
               <div className="flex flex-wrap gap-5 text-lg">
@@ -197,7 +197,7 @@ function CourseDetails() {
           <div className="my-8 border border-richblack-600 p-8">
             <p className="text-3xl font-semibold">What you'll learn</p>
             <div className="mt-5">
-              {/* <ReactMarkdown>{whatYouWillLearn}</ReactMarkdown> */}
+              <Markdown>{whatYouWillLearn}</Markdown>
             </div>
           </div>
 
@@ -244,14 +244,14 @@ function CourseDetails() {
               <div className="flex items-center gap-4 py-4">
                 <img
                   src={
-                    instructor.image
+                    instructor?.image
                       ? instructor.image
-                      : `https://api.dicebear.com/5.x/initials/svg?seed=${instructor.firstName} ${instructor.lastName}`
+                      : `https://api.daicebear.com/5.x/initials/svg?seed=${instructor.firstName} ${instructor.lastName}`
                   }
                   alt="Author"
                   className="h-14 w-14 rounded-full object-cover"
                 />
-                <p className="text-lg">{`${instructor.firstName} ${instructor.lastName}`}</p>
+                <p className="text-lg">{`${instructor?.firstName} ${instructor?.lastName}`}</p>
               </div>
               <p className="text-richblack-50">
                 {instructor?.additionalDetails?.about}
